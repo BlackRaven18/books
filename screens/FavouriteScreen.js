@@ -1,17 +1,7 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Button, View, FlatList } from 'react-native';
-import React, { useState, useEffect } from "react";
-import {
-  Text,
-  Image,
-  TextInput,
-  TouchableOpacity,
-  SafeAreaView,
-  ScrollView,
-} from "react-native";
-import { getFirestore } from "firebase/firestore";
-import app from "../firestoreConfig"
-import { collection, getDocs, addDoc, getDoc, doc } from "firebase/firestore";
+import { collection, getDocs, getFirestore } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import { FlatList, Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import app from "../firestoreConfig";
 
 export default function FavouriteScreen({navigation}) {
 

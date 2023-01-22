@@ -1,36 +1,20 @@
-import * as React from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator,createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import { createDrawerNavigator} from '@react-navigation/drawer';
-import { color } from 'react-native-reanimated';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { extendTheme, NativeBaseProvider } from 'native-base';
+import * as React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { Icon,NativeBaseProvider,extendTheme, FavouriteIcon} from 'native-base';
-import {useState} from 'react';
 
-import LoginScreen from './screens/LoginScreen';
-import RegistrationScreen from './screens/RegistrationScreen';
 import DetailsScreen from './screens/DetailsScreen';
-import HistoryScreen from './screens/HistoryScreen';
-import PopularScreen from './screens/PopularScreen';
-import RegisterScreen from './screens/RegisterScreen';
-import ReservationsScreen from './screens/RegisterScreen';
 import FavouriteScreen from './screens/FavouriteScreen';
+import HistoryScreen from './screens/HistoryScreen';
+import LoginScreen from './screens/LoginScreen';
+import PopularScreen from './screens/PopularScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import { default as RegisterScreen, default as ReservationsScreen } from './screens/RegisterScreen';
+import RegistrationScreen from './screens/RegistrationScreen';
 
-import {
-  SafeAreaView,
-  StyleSheet,
-  View,
-  Text,
-  TextInput,
-  Input,
-  Button,
-} from 'react-native';
-import { getFirestore } from "firebase/firestore";
-import app from "./firestoreConfig"
-import { collection, getDocs, addDoc } from "firebase/firestore";
-import {useEffect} from "react";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();

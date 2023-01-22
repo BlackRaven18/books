@@ -1,16 +1,12 @@
 
-import { StyleSheet, View, FlatList } from 'react-native';
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  Text,
-  Image,
-  SafeAreaView,
-} from "react-native";
+  FlatList, Image,
+  SafeAreaView, StyleSheet, Text, View
+} from 'react-native';
 
-import { Barometer } from 'expo-sensors';
-import { getFirestore } from "firebase/firestore";
-import { collection, getDocs} from "firebase/firestore";
-import app from "../firestoreConfig"
+import { collection, getDocs, getFirestore } from "firebase/firestore";
+import app from "../firestoreConfig";
 
 export default function PopularScreen({navigation}) {
   const [permission, setPermission] = useState(null);

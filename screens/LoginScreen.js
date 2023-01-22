@@ -1,12 +1,12 @@
-import {StatusBar} from 'expo-status-bar';
-import {ActivityIndicator, Image, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
-import React, {useState, useEffect} from "react";
+import { StatusBar } from 'expo-status-bar';
+import React, { useEffect, useState } from "react";
+import { ActivityIndicator, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-import { 
-  getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut
+import {
+  getAuth, signInWithEmailAndPassword
 } from "firebase/auth";
 
-import {getFirestore} from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
 import app from "../firestoreConfig";
 
 export default function LoginScreen({navigation}) {

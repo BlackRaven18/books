@@ -1,19 +1,8 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Button, View } from 'react-native';
-import React, { useState } from "react";
-import {
-  Text,
-  Image,
-  TextInput,
-  TouchableOpacity,
-  SafeAreaView,
-  ScrollView,
-} from "react-native";
-import { getFirestore } from "firebase/firestore";
-import app from "../firestoreConfig"
-import { collection, getDocs, addDoc, getDoc, doc } from "firebase/firestore";
-import {useEffect} from "react";
-import { getAuth, signOut } from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
+import { doc, getDoc, getFirestore } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import app from "../firestoreConfig";
 
 const auth = getAuth();
 

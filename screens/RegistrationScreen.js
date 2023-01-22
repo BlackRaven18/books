@@ -1,10 +1,10 @@
-import {StatusBar} from 'expo-status-bar';
-import {Image, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
-import React, {useEffect, useState} from "react";
+import { StatusBar } from 'expo-status-bar';
+import React, { useEffect, useState } from "react";
+import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-import {collection, getDocs, getFirestore} from "firebase/firestore";
-import app from "../firestoreConfig"
-import {createUserWithEmailAndPassword, getAuth} from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { collection, getDocs, getFirestore } from "firebase/firestore";
+import app from "../firestoreConfig";
 
 export default function RegistrationScreen({navigation}) {
 

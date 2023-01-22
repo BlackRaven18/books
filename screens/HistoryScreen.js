@@ -1,20 +1,9 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Button, View, FlatList } from 'react-native';
-import React, { useState} from "react";
-import { useEffect } from 'react';
 import { Accelerometer } from 'expo-sensors';
-import {
-  Text,
-  Image,
-  TextInput,
-  TouchableOpacity,
-  SafeAreaView,
-  ScrollView,
-} from "react-native";
+import React, { useEffect, useState } from "react";
+import { FlatList, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { getFirestore } from "firebase/firestore";
-import app from "../firestoreConfig"
-import { collection, getDocs, addDoc, getDoc, doc } from "firebase/firestore";
+import { collection, getDocs, getFirestore } from "firebase/firestore";
+import app from "../firestoreConfig";
 
 export default function HistoryScreen({navigation}) {
   const [accelerometerData, setAccelerometerData] = useState({});

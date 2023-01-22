@@ -1,22 +1,14 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Button, View, FlatList } from 'react-native';
-import React, { useState } from "react";
-import { useEffect } from 'react';
 import { Accelerometer } from 'expo-sensors';
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View } from 'react-native';
 
 import {
-  Text,
-  Image,
-  TextInput,
-  TouchableOpacity,
-  SafeAreaView,
-  ScrollView,
+  Image, SafeAreaView, Text, TouchableOpacity
 } from "react-native";
 
-import { getFirestore } from "firebase/firestore";
-import app from "../firestoreConfig"
-import { collection, getDocs, addDoc, getDoc, doc } from "firebase/firestore";
 import { useRoute } from '@react-navigation/native';
+import { collection, getDocs, getFirestore } from "firebase/firestore";
+import app from "../firestoreConfig";
 
 
 export default function DetailsScreen({navigation}) {
