@@ -1,7 +1,11 @@
 import {StatusBar} from 'expo-status-bar';
 import {ActivityIndicator, Image, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
-import React, {useState} from "react";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import React, {useState, useEffect} from "react";
+
+import { 
+  getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut
+} from "firebase/auth";
+
 import {getFirestore} from "firebase/firestore";
 import app from "./firestoreConfig";
 
@@ -18,26 +22,30 @@ export default function HomeScreenStack({navigation}) {
     if (prop === 'email') setEmail(val);
     else setPassword(val);
   }
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      if(user){
+        navigation.navigate("Books");
+      }
+    })
+
+    return unsubscribe;
+  }, []);
+
   const userLogin = () => {
-    if (email === '' && password === '') {
-      
-    } else {
-      setIsLoading(true);
-
-      signInWithEmailAndPassword(auth, email, password)
-          .then((userCredential) => {
-            // Signed in
-            const user = userCredential.user;
-            console.log(user);
-          })
-          .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log(errorMessage);
-          });
-
-
-    }
+    signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      // Signed in 
+      const user = userCredential.user;
+      console.log("Signed in: ", user.email);
+      // ...
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+    });
+  
   }
 
   if (isLoading) {

@@ -127,6 +127,7 @@ const styles = StyleSheet.create({
     },
   loginText:{
     placeholderTextColor: "#FFFFFF",
+    color: "white",
   },
 
   mytext:{
@@ -150,10 +151,6 @@ const styles = StyleSheet.create({
         width: '100%',
         overflow: 'hidden',
       },
-
-  loginText:{
-    color: "white",
-  },
 
   newtext:{
     marginRight: 220,

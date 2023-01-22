@@ -13,6 +13,11 @@ import { getFirestore } from "firebase/firestore";
 import app from "./firestoreConfig"
 import { collection, getDocs, addDoc, getDoc, doc } from "firebase/firestore";
 import {useEffect} from "react";
+import { getAuth, signOut } from 'firebase/auth';
+
+const auth = getAuth();
+
+
 
 export default function ScreenTab5F({navigation}) {
   const [data, setData] = useState([]);
@@ -24,23 +29,18 @@ export default function ScreenTab5F({navigation}) {
                 console.log(querySnapshot.data());
                 setData(querySnapshot.data());
             }
-//            let tmp = []
-//            querySnapshot.forEach((doc) => {
-//                tmp = [...tmp, doc.data()];
-//            });
 
         })
-      //   try {
-      //       const docRef = addDoc(collection(db, "users"), {
-      //           first: "Ada",
-      //           last: "Lovelace",
-      //           borrn: 1815
-      //       });
-      //       console.log("Document written with ID: ", docRef.id);
-      //   } catch (e) {
-      //       console.error("Error adding document: ", e);
-      //   }
     }, [])
+
+    const handleSingOut = () => {
+      auth
+      .signOut()
+      .then(() => {
+        navigation.navigate("Domowa");
+      })
+      .catch(error => alert(error.message));
+    }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -58,7 +58,7 @@ export default function ScreenTab5F({navigation}) {
             <TouchableOpacity style={styles.loginBtn} onPress={()=>navigation.navigate("Historia", {language: "english"})}>
                             <Text style={styles.loginText}>Historia</Text>
                         </TouchableOpacity>
-            <TouchableOpacity style={styles.loginBtn} onPress={()=>navigation.navigate("Domowa", {language: "english"})}>
+            <TouchableOpacity style={styles.loginBtn} onPress={handleSingOut}>
                 <Text style={styles.loginText}>Wyloguj</Text>
             </TouchableOpacity>
         </View>
@@ -105,9 +105,6 @@ const styles = StyleSheet.create({
           marginRight: 260,
           marginTop: 1,
     },
-  loginText:{
-    placeholderTextColor: "#FFFFFF",
-  },
 
   mytext:{
     height: 30,
@@ -129,9 +126,6 @@ const styles = StyleSheet.create({
        marginLeft:25,
      },
 
-  loginText:{
-    color: "white",
-  },
 
   newtext:{
     marginRight: 220,

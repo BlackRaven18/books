@@ -90,9 +90,6 @@ const styles = StyleSheet.create({
           marginLeft: 1,
           marginTop: 1,
     },
-  loginText:{
-    placeholderTextColor: "#FFFFFF",
-  },
 
   mytext:{
     height: 30,
@@ -112,10 +109,6 @@ const styles = StyleSheet.create({
        marginBottom: 0,
        marginLeft:25,
      },
-
-  loginText:{
-    color: "white",
-  },
 
   newtext:{
     marginRight: 220,
