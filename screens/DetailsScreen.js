@@ -63,7 +63,7 @@ export default function DetailsScreen({navigation}) {
         <TouchableOpacity style={styles.loginBtnd} onPress={()=>navigation.navigate("Rejestr", {language: "english"})}>
                 <Text style={styles.loginText}>&lt;-</Text>
         </TouchableOpacity>
-        
+
         {data.length > 0 ? <Image style={styles.imagek} source={{uri: data[0].obraz}} /> : null}
         {data.length > 0 ? <Text style={styles.mytexta}>{data[0].nazwa}</Text> : null}
         {data.length > 0 ? <Text style={styles.mytextb}>{data[0].opis}</Text> : null}

@@ -1,10 +1,17 @@
-import { collection, getDocs, getFirestore } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Button, View, FlatList } from 'react-native';
+import React, { useState, useEffect } from "react";
 import {
-  FlatList, Image, SafeAreaView, StyleSheet, Text, TextInput,
-  TouchableOpacity, View
-} from 'react-native';
-import app from "../firestoreConfig";
+  Text,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  SafeAreaView,
+  ScrollView,
+} from "react-native";
+import { getFirestore } from "firebase/firestore";
+import app from "../firestoreConfig"
+import { collection, getDocs, addDoc, getDoc, doc } from "firebase/firestore";
 
 export default function RegisterScreen({navigation}) {
     const [data, setData] = useState([]);
@@ -52,7 +59,7 @@ export default function RegisterScreen({navigation}) {
                       console.log(item);
                       return(
                         <View style={styles.sview}>
-                          <TouchableOpacity onPress={()=>navigation.navigate("Opis", { nazwa: item.item.nazwa, obraz: item.item.obraz, opis: item.item.opis })}>
+                          <TouchableOpacity onPress={()=>navigation.navigate("Opis", { nazwa: item.item.nazwa, obraz: item.item.obraz, opis: item.item.opis, rodzaj: item.item.rodzaj })}>
                             <Image style={styles.imagek} source={{uri: item.item.obraz}} />
                           </TouchableOpacity>
                           <View>
@@ -123,7 +130,6 @@ const styles = StyleSheet.create({
        marginBottom: 0,
        marginLeft:25,
      },
-
 
   newtext:{
     marginRight: 220,
