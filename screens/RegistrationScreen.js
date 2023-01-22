@@ -3,10 +3,10 @@ import {Image, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-
 import React, {useEffect, useState} from "react";
 
 import {collection, getDocs, getFirestore} from "firebase/firestore";
-import app from "./firestoreConfig"
+import app from "../firestoreConfig"
 import {createUserWithEmailAndPassword, getAuth} from "firebase/auth";
 
-export default function Screen1F({navigation}) {
+export default function RegistrationScreen({navigation}) {
 
     const [displayName, setDisplayName] = useState('');
     const [displaySurname, setDisplaySurname] = useState('');
@@ -44,14 +44,14 @@ export default function Screen1F({navigation}) {
                 console.log(error.message)
                 // ..
             });
-        navigation.navigate("Domowa", {language: "english"})
+        navigation.navigate("Logowanie", {language: "english"})
     };
 
     return (
 
         <View style={styles.container}>
 
-            <Image style={styles.image} source={require("./log2.png")}/>
+            <Image style={styles.image} source={require("../assets/log2.png")}/>
             <Text style={styles.mytext}>Rejestracja</Text>
             <StatusBar style="auto"/>
             <Text style={styles.newtext}>Imię</Text>
@@ -103,7 +103,7 @@ export default function Screen1F({navigation}) {
             <TouchableOpacity style={styles.loginBtn} onPress={handleSignUp}>
                 <Text style={styles.loginText}>Rejestruj</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate("Domowa", {language: "english"})}>
+            <TouchableOpacity onPress={() => navigation.navigate("Logowanie", {language: "english"})}>
                 <Text style={styles.forgot_button}>Logowanie</Text>
             </TouchableOpacity>
         </View>

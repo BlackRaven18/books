@@ -10,9 +10,9 @@ import {
 import { Barometer } from 'expo-sensors';
 import { getFirestore } from "firebase/firestore";
 import { collection, getDocs} from "firebase/firestore";
-import app from "./firestoreConfig"
+import app from "../firestoreConfig"
 
-export default function ScreenTab1F({navigation}) {
+export default function PopularScreen({navigation}) {
   const [permission, setPermission] = useState(null);
   const [pressure, setPressure] = useState(0);
 
@@ -43,7 +43,7 @@ export default function ScreenTab1F({navigation}) {
 
   return (
     <SafeAreaView style={styles.container}>
-        <Image style={styles.image} source={require("./log2.png")} />
+        <Image style={styles.image} source={require("../assets/log2.png")} />
         <Text style={styles.mytext}>Najpopularniejsze książki</Text>
         <Text style={styles.mytexta}>{pressure} hPa</Text>
 

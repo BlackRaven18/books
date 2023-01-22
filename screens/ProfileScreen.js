@@ -10,7 +10,7 @@ import {
   ScrollView,
 } from "react-native";
 import { getFirestore } from "firebase/firestore";
-import app from "./firestoreConfig"
+import app from "../firestoreConfig"
 import { collection, getDocs, addDoc, getDoc, doc } from "firebase/firestore";
 import {useEffect} from "react";
 import { getAuth, signOut } from 'firebase/auth';
@@ -19,7 +19,7 @@ const auth = getAuth();
 
 
 
-export default function ScreenTab5F({navigation}) {
+export default function ProfileScreen({navigation}) {
   const [data, setData] = useState([]);
   const [userId, setUserId] = useState('7dtjsgPYcdEoptEirNYD');
     const db = getFirestore(app);
@@ -37,17 +37,17 @@ export default function ScreenTab5F({navigation}) {
       auth
       .signOut()
       .then(() => {
-        navigation.navigate("Domowa");
+        navigation.navigate("Logowanie");
       })
       .catch(error => alert(error.message));
     }
 
   return (
     <SafeAreaView style={styles.container}>
-        <Image style={styles.image} source={require("./log2.png")} />
+        <Image style={styles.image} source={require("../assets/log2.png")} />
         <Text style={styles.mytext}>Profil</Text>
         <View style={styles.sview}>
-            <Image style={styles.imagek} source={require("./ustawienia.jpeg")} />
+            <Image style={styles.imagek} source={require("../assets/ustawienia.jpeg")} />
             <View>
                 <Text style={styles.mytexta}>Imię: &nbsp;{data.imie}</Text>
                 <Text style={styles.mytexta}>Nazwisko: &nbsp;{data.nazwisko}</Text>
@@ -56,10 +56,10 @@ export default function ScreenTab5F({navigation}) {
         </View>
         <View style={styles.sdview}>
             <TouchableOpacity style={styles.loginBtn} onPress={()=>navigation.navigate("Historia", {language: "english"})}>
-                            <Text style={styles.loginText}>Historia</Text>
+                            <Text style={styles.buttonText}>Historia</Text>
                         </TouchableOpacity>
             <TouchableOpacity style={styles.loginBtn} onPress={handleSingOut}>
-                <Text style={styles.loginText}>Wyloguj</Text>
+                <Text style={styles.buttonText}>Wyloguj</Text>
             </TouchableOpacity>
         </View>
     </SafeAreaView>
@@ -105,6 +105,10 @@ const styles = StyleSheet.create({
           marginRight: 260,
           marginTop: 1,
     },
+  buttonText:{
+    placeholderTextColor: "#FFFFFF",
+    color: "white",
+  },
 
   mytext:{
     height: 30,
@@ -125,7 +129,6 @@ const styles = StyleSheet.create({
        marginBottom: 0,
        marginLeft:25,
      },
-
 
   newtext:{
     marginRight: 220,

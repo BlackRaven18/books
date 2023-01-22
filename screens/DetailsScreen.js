@@ -14,12 +14,12 @@ import {
 } from "react-native";
 
 import { getFirestore } from "firebase/firestore";
-import app from "./firestoreConfig"
+import app from "../firestoreConfig"
 import { collection, getDocs, addDoc, getDoc, doc } from "firebase/firestore";
 import { useRoute } from '@react-navigation/native';
 
 
-export default function Screen2F({navigation}) {
+export default function DetailsScreen({navigation}) {
   const [data, setData] = useState([]);
           const [userId, setUserId] = useState('7dtjsgPYcdEoptEirNYD');
           const route = useRoute();
@@ -63,7 +63,7 @@ export default function Screen2F({navigation}) {
     }, []);
   return (
     <SafeAreaView style={styles.container}>
-        <Image style={styles.image} source={require("./log2.png")} />
+        <Image style={styles.image} source={require("../assets/log2.png")} />
         { accelerometerData.x > 0.53 ? (
                 navigation.navigate("Rejestr", {language: "english"})
          ) : null }

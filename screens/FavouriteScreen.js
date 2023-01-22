@@ -10,10 +10,10 @@ import {
   ScrollView,
 } from "react-native";
 import { getFirestore } from "firebase/firestore";
-import app from "./firestoreConfig"
+import app from "../firestoreConfig"
 import { collection, getDocs, addDoc, getDoc, doc } from "firebase/firestore";
 
-export default function ScreenTab4F({navigation}) {
+export default function FavouriteScreen({navigation}) {
 
     const [data, setData] = useState([]);
     const [userId, setUserId] = useState('7dtjsgPYcdEoptEirNYD');
@@ -40,7 +40,7 @@ export default function ScreenTab4F({navigation}) {
     <SafeAreaView style={styles.container}>
 
 
-        <Image style={styles.image} source={require("./log2.png")} />
+        <Image style={styles.image} source={require("../assets/log2.png")} />
         <Text style={styles.mytext}>Ulubione</Text>
 
              <FlatList

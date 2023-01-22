@@ -5,17 +5,19 @@ import { createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator} from '@react-navigation/drawer';
 import { color } from 'react-native-reanimated';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { Icon,NativeBaseProvider,extendTheme} from 'native-base';
+import { Icon,NativeBaseProvider,extendTheme, FavouriteIcon} from 'native-base';
 import {useState} from 'react';
-import HomeScreenStack from './screens/HomeScreenStack';
-import Screen1F from './screens/Screen1F';
-import Screen2F from './screens/Screen2F';
-import Screen3F from './screens/Screen3F';
-import ScreenTab1F from './screens/ScreenTab1F';
-import ScreenTab2F from './screens/ScreenTab2F';
-import ScreenTab3F from './screens/ScreenTab3F';
-import ScreenTab4F from './screens/ScreenTab4F';
-import ScreenTab5F from './screens/ScreenTab5F';
+
+import LoginScreen from './screens/LoginScreen';
+import RegistrationScreen from './screens/RegistrationScreen';
+import DetailsScreen from './screens/DetailsScreen';
+import HistoryScreen from './screens/HistoryScreen';
+import PopularScreen from './screens/PopularScreen';
+import RegisterScreen from './screens/RegisterScreen';
+import ReservationsScreen from './screens/RegisterScreen';
+import FavouriteScreen from './screens/FavouriteScreen';
+import ProfileScreen from './screens/ProfileScreen';
+
 import {
   SafeAreaView,
   StyleSheet,
@@ -38,11 +40,10 @@ function MyStack() {
   return (
     <Stack.Navigator
     screenOptions={{headerShown: false}}>
-      <Stack.Screen name="Domowa" component={HomeScreenStack} />
-      <Stack.Screen name="Opis" component={Screen2F} />
-      <Stack.Screen name="Screen1" component={Screen1F} />
-      <Stack.Screen name="Historia" component={Screen3F} />
-      <Stack.Screen name="BottomTabNavigation" component={BottomTabs} />
+      <Stack.Screen name="Logowanie" component={LoginScreen} />
+      <Stack.Screen name="Rejestracja" component={RegistrationScreen} />
+      <Stack.Screen name="Opis" component={DetailsScreen} />
+      <Stack.Screen name="Historia" component={HistoryScreen} />
     </Stack.Navigator>
   );
 }
@@ -75,25 +76,15 @@ function BottomTabs() {
             tabBarInactiveTintColor: 'black',
         })}
         >
-      <Tab.Screen name="Popularne" component={ScreenTab1F} options={{headerShown: false}}/>
-      <Tab.Screen name="Rejestr" component={ScreenTab2F} options={{headerShown: false}}/>
-      <Tab.Screen name="Rezerwacje" component={ScreenTab3F} options={{headerShown: false}}/>
-      <Tab.Screen name="Ulubione" component={ScreenTab4F} options={{headerShown: false}}/>
-      <Tab.Screen name="Profil" component={ScreenTab5F} options={{headerShown: false}}/>
+      <Tab.Screen name="Popularne" component={PopularScreen} options={{headerShown: false}}/>
+      <Tab.Screen name="Rejestr" component={RegisterScreen} options={{headerShown: false}}/>
+      <Tab.Screen name="Rezerwacje" component={ReservationsScreen} options={{headerShown: false}}/>
+      <Tab.Screen name="Ulubione" component={FavouriteScreen} options={{headerShown: false}}/>
+      <Tab.Screen name="Profil" component={ProfileScreen} options={{headerShown: false}}/>
     </Tab.Navigator>
   );
 }
-function MyStackTab()
-{
-  return (
-    <Tab.Navigator>
-      <Stack.Screen name="HomeStackTab" component={HomeScreenStack} />
-      <Stack.Screen name="Screen2" component={Screen2F} />
-      <Stack.Screen name="Screen1" component={Screen1F} />
-      <Stack.Screen name="Screen3" component={Screen3F} />
-    </Tab.Navigator>
-  );
-}
+
 const newColorTheme = {
   brand: {
     900: '#5B8DF6',
@@ -120,7 +111,7 @@ function App()
       headerTintColor: 'white',
     }}
    >
-      <Drawer.Screen name="Logowanie" component={MyStack} />
+      <Drawer.Screen name="Panel logowania" component={MyStack} />
       <Drawer.Screen name="Books" component={BottomTabs} />
     </Drawer.Navigator>
     </NavigationContainer>

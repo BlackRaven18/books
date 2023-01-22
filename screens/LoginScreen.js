@@ -7,9 +7,9 @@ import {
 } from "firebase/auth";
 
 import {getFirestore} from "firebase/firestore";
-import app from "./firestoreConfig";
+import app from "../firestoreConfig";
 
-export default function HomeScreenStack({navigation}) {
+export default function LoginScreen({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -58,7 +58,7 @@ export default function HomeScreenStack({navigation}) {
 
   return (
     <View style={styles.container}>
-          <Image style={styles.image} source={require("./log2.png")} />
+          <Image style={styles.image} source={require("../assets/log2.png")} />
           <Text style={styles.mytext}>Witamy ponownie</Text>
           <StatusBar style="auto" />
           <Text style={styles.newtext}>Email</Text>
@@ -89,7 +89,7 @@ export default function HomeScreenStack({navigation}) {
           <TouchableOpacity style={styles.loginBtn} onPress={()=>userLogin()}>
             <Text style={styles.loginText}>Zaloguj</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={()=>navigation.navigate("Screen1", {language: "english"})}>
+          <TouchableOpacity onPress={()=>navigation.navigate("Rejestracja", {language: "english"})}>
                   <Text style={styles.forgot_button}>Rejestracja</Text>
           </TouchableOpacity>
         </View>

@@ -10,10 +10,10 @@ import {
   ScrollView,
 } from "react-native";
 import { getFirestore } from "firebase/firestore";
-import app from "./firestoreConfig"
+import app from "../firestoreConfig"
 import { collection, getDocs, addDoc, getDoc, doc } from "firebase/firestore";
 
-export default function ScreenTab2F({navigation}) {
+export default function RegisterScreen({navigation}) {
     const [data, setData] = useState([]);
         const [userId, setUserId] = useState('7dtjsgPYcdEoptEirNYD');
         const [searchText, setSearchText] = useState('');
@@ -42,7 +42,7 @@ export default function ScreenTab2F({navigation}) {
         }, []);
   return (
     <SafeAreaView style={styles.container}>
-        <Image style={styles.image} source={require("./log2.png")} />
+        <Image style={styles.image} source={require("../assets/log2.png")} />
         <Text style={styles.mytext}>Rejestr</Text>
         <View style={styles.inputView}>
 

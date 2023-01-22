@@ -13,10 +13,10 @@ import {
 } from "react-native";
 
 import { getFirestore } from "firebase/firestore";
-import app from "./firestoreConfig"
+import app from "../firestoreConfig"
 import { collection, getDocs, addDoc, getDoc, doc } from "firebase/firestore";
 
-export default function Screen3F({navigation}) {
+export default function HistoryScreen({navigation}) {
   const [accelerometerData, setAccelerometerData] = useState({});
 
       useEffect(() => {
@@ -51,7 +51,7 @@ export default function Screen3F({navigation}) {
           }, []);
   return (
     <SafeAreaView style={styles.container}>
-        <Image style={styles.image} source={require("./log2.png")} />
+        <Image style={styles.image} source={require("../assets/log2.png")} />
         { accelerometerData.x > 0.53 ? (
                         navigation.navigate("Profil", {language: "english"})
          ) : null }
