@@ -12,7 +12,8 @@ import HistoryScreen from './screens/HistoryScreen';
 import LoginScreen from './screens/LoginScreen';
 import PopularScreen from './screens/PopularScreen';
 import ProfileScreen from './screens/ProfileScreen';
-import { default as RegisterScreen, default as ReservationsScreen } from './screens/RegisterScreen';
+import RegisterScreen from './screens/RegisterScreen';
+import ReservationsScreen from './screens/ReservationsScreen';
 import RegistrationScreen from './screens/RegistrationScreen';
 
 

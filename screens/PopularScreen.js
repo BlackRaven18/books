@@ -1,87 +1,97 @@
-
-import React, { useEffect, useState } from "react";
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Button, View, FlatList } from 'react-native';
+import React, { useState, useEffect } from "react";
 import {
-  FlatList, Image,
-  SafeAreaView, StyleSheet, Text, View
-} from 'react-native';
-
-import { collection, getDocs, getFirestore } from "firebase/firestore";
-import app from "../firestoreConfig";
+  Text,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  SafeAreaView,
+  ScrollView,
+  Platform,
+} from "react-native";
+import { Barometer } from 'expo-sensors';
+import { getFirestore } from "firebase/firestore";
+import app from "../firestoreConfig"
+import { collection, getDocs, addDoc, getDoc, doc } from "firebase/firestore";
 
 export default function PopularScreen({navigation}) {
-  const [permission, setPermission] = useState(null);
-  const [pressure, setPressure] = useState(0);
-
-
-    const [data, setData] = useState([]);
-    const [userId, setUserId] = useState('7dtjsgPYcdEoptEirNYD');
-    const db = getFirestore(app);
+  const [barometerData, setBarometerData] = useState({});
 
     useEffect(() => {
-        getDocs(collection(db, "users", userId, "popularne")).then((querySnapshot) => {
-            const newData = [];
-            querySnapshot.forEach((doc) => {
-                const docData = doc.data();
-                newData.push({
-                    id: doc.id,
-                    nazwa: docData.nazwa,
-                    nazwad: docData.nazwad,
-                    obraz: docData.obraz,
-                    obrazd: docData.obrazd,
-                });
-            });
-            setData(newData);
+      const subscribe = Barometer.addListener(barometerData => {
+        setBarometerData(barometerData);
+      });
 
-        });
+      return () => {
+        subscribe.remove();
+      };
     }, []);
+    const [data, setData] = useState([]);
+            const [userId, setUserId] = useState('7dtjsgPYcdEoptEirNYD');
+            const db = getFirestore(app);
+            useEffect(() => {
+                getDocs(collection(db, "users", userId, "popularne")).then((querySnapshot) => {
+                    const newData = [];
+                    querySnapshot.forEach((doc) => {
+                        const docData = doc.data();
+                        newData.push({
+                            id: doc.id,
+                            nazwa: docData.nazwa,
+                            nazwad: docData.nazwad,
+                            obraz: docData.obraz,
+                            obrazd: docData.obrazd,
+                        });
+                        //rconsole.log(newData);
+                    });
+                    setData(newData);
 
-
-
+                });
+            }, []);
   return (
     <SafeAreaView style={styles.container}>
         <Image style={styles.image} source={require("../assets/log2.png")} />
         <Text style={styles.mytext}>Najpopularniejsze książki</Text>
-        <Text style={styles.mytexta}>{pressure} hPa</Text>
-
-        { pressure > 1013 ? (
+        <Text style={styles.mytexta}>{barometerData.pressure} hPa</Text>
+        { barometerData.pressure > 1013 ? (
                         <Text style={styles.mytexta}>dobre ciśnienie do czytania</Text>
         ) : null }
-        { pressure <= 1013 ? (
+        { barometerData.pressure <= 1013 ? (
                          <Text style={styles.mytexta}>złe ciśnienie do czytania</Text>
         ) : null }
         <FlatList
-                data={data}
-                renderItem={(item) => {return(
-                    <View style={styles.sview}>
-                       <View>
-                        <Image style={styles.imagek} source={{uri: item.item.obraz}} />
+                         data={data}
+                         renderItem={(item) => { console.log(item); return(
+                             <View style={styles.sview}>
+                                <View>
+                                 <Image style={styles.imagek} source={{uri: item.item.obraz}} />
 
-                        <Text style={styles.mytextb}>{item.item.nazwa}</Text>
-                       </View>
+                                 <Text style={styles.mytextb}>{item.item.nazwa}</Text>
+                                </View>
 
-                    </View>
-                )}}
-                keyExtractor={item => item.id}
-                style={styles.scrollView}
-                horizontal={true}
-          />
-        <FlatList
-             data={data}
-             renderItem={(item) => {return(
-                 <View style={styles.sview}>
-                   <View>
-                     <Image style={styles.imagek} source={{uri: item.item.obrazd}} />
+                             </View>
+                         )}}
+                         keyExtractor={item => item.id}
+                         style={styles.flatListStyle}
+                         horizontal={true}
+                     />
+                     <FlatList
+                                              data={data}
+                                              renderItem={(item) => { console.log(item); return(
+                                                  <View style={styles.sview}>
+                                                    <View>
+                                                      <Image style={styles.imagek} source={{uri: item.item.obrazd}} />
 
-                     <Text style={styles.mytextb}>{item.item.nazwad}</Text>
+                                                      <Text style={styles.mytextb}>{item.item.nazwad}</Text>
 
-                     </View>
-                 </View>
-             )}}
+                                                      </View>
+                                                  </View>
+                                              )}}
+                                              keyExtractor={item => item.id}
+                                              style={styles.flatListStyle}
+                                              horizontal={true}
+                                          />
 
-             keyExtractor={item => item.id}
-             style={styles.scrollView}
-             horizontal={true}
-         />
 
     </SafeAreaView>
   );
@@ -95,13 +105,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
-  scrollView: {
+  flatListStyle: {
       backgroundColor: 'white',
       marginHorizontal: 20,
-      overflow: 'scroll',
+      overflow: 'Scroll',
     },
     sview: {
            flexDirection: 'row',
+
         },
 
   image: {
@@ -142,7 +153,6 @@ const styles = StyleSheet.create({
           textAlign: 'center',
           flexWrap: 'wrap',
         },
-
 
   newtext:{
     marginRight: 220,

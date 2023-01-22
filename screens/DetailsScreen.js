@@ -1,15 +1,22 @@
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Button, View, FlatList } from 'react-native';
+import React, { useState } from "react";
+import { useEffect } from 'react';
 import { Accelerometer } from 'expo-sensors';
-import React, { useEffect, useState } from "react";
-import { StyleSheet, View } from 'react-native';
 
 import {
-  Image, SafeAreaView, Text, TouchableOpacity
+  Text,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  SafeAreaView,
+  ScrollView,
 } from "react-native";
 
+import { getFirestore } from "firebase/firestore";
+import app from "../firestoreConfig"
+import { collection, getDocs, addDoc, getDoc, doc, deleteDoc, getDocumentId } from "firebase/firestore";
 import { useRoute } from '@react-navigation/native';
-import { collection, getDocs, getFirestore } from "firebase/firestore";
-import app from "../firestoreConfig";
-
 
 export default function DetailsScreen({navigation}) {
   const [data, setData] = useState([]);
@@ -18,8 +25,10 @@ export default function DetailsScreen({navigation}) {
           const [nazwa, setNazwa] = useState(route.params.nazwa);
           const [obraz, setObraz] = useState(route.params.obraz);
           const [opis, setOpis] = useState(route.params.opis);
+          const [rodzaj, setRodzaj] = useState(route.params.rodzaj);
           const [searchText, setSearchText] = useState('');
           const db = getFirestore(app);
+
           const filteredData = data.filter(item =>
             item.nazwa.toLowerCase().includes(searchText.toLowerCase()) ||
             item.rodzaj.toLowerCase().includes(searchText.toLowerCase())
@@ -38,7 +47,7 @@ export default function DetailsScreen({navigation}) {
                       });
                       //rconsole.log(newData);
                   });
-                  setData(newData.filter(item => item.nazwa === nazwa && item.obraz === obraz && item.opis === opis))
+                  setData(newData.filter(item => item.nazwa === nazwa && item.obraz === obraz && item.opis === opis && item.rodzaj === rodzaj))
 
               });
           }, []);
@@ -53,6 +62,39 @@ export default function DetailsScreen({navigation}) {
         subscribe.remove();
       };
     }, []);
+    const addToFavorites = async () => {
+        try {
+            const dataToAdd = {
+                nazwa: nazwa,
+                obraz: obraz,
+                rodzaj: rodzaj,
+            };
+            await addDoc(collection(db, "users", userId, "ulubione"), dataToAdd);
+        } catch (err) {
+            console.error(err);
+        }
+    };
+    const addReservation = async () => {
+        const today = new Date();
+        const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+        const formattedDate = new Intl.DateTimeFormat('pl-PL', options).format(today)
+        try {
+            const dataToAdd = {
+                nazwa: nazwa,
+                data: formattedDate,
+                obraz: obraz,
+            };
+            await addDoc(collection(db, "users", userId, "rezerwacje"), dataToAdd);
+        } catch (err) {
+            console.error(err);
+        }
+    };
+        const removeReservation = async () => {
+            const docRef = doc(db, "users", userId, "rezerwacje", "6TmLZFAXnykIyW8YD6aI");
+            const docRef2 = doc(db, "users", userId, "ulubione", "6TmLZFAXnykIyW8YD6aI");
+            deleteDoc(docRef) .then(() => { console.log("Entire Document has been deleted successfully.") }) .catch(error => { console.log(error); });
+            deleteDoc(docRef) .then(() => { console.log("Entire Document has been deleted successfully.") }) .catch(error => { console.log(error); })
+        };
   return (
     <SafeAreaView style={styles.container}>
         <Image style={styles.image} source={require("../assets/log2.png")} />
@@ -61,21 +103,21 @@ export default function DetailsScreen({navigation}) {
          ) : null }
         <Text style={styles.mytext}>Opis</Text>
         <TouchableOpacity style={styles.loginBtnd} onPress={()=>navigation.navigate("Rejestr", {language: "english"})}>
-                <Text style={styles.loginText}>&lt;-</Text>
+                <Text style={styles.buttonText}>&lt;-</Text>
         </TouchableOpacity>
 
         {data.length > 0 ? <Image style={styles.imagek} source={{uri: data[0].obraz}} /> : null}
         {data.length > 0 ? <Text style={styles.mytexta}>{data[0].nazwa}</Text> : null}
         {data.length > 0 ? <Text style={styles.mytextb}>{data[0].opis}</Text> : null}
         <View style={styles.sdview}>
-            <TouchableOpacity style={styles.loginBtn}>
-                <Text style={styles.loginText}>Rezerwuj</Text>
+            <TouchableOpacity style={styles.loginBtn} onPress={addReservation}>
+                <Text style={styles.buttonText}>Rezerwuj</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.loginBtn}>
-                <Text style={styles.loginText}>Ulubiona</Text>
+            <TouchableOpacity style={styles.loginBtn} onPress={addToFavorites}>
+              <Text style={styles.buttonText}>Ulubione</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.loginBtn}>
-                <Text style={styles.loginText}>Usuń</Text>
+            <TouchableOpacity style={styles.loginBtn} onPress={data.length !== 0 ? () => removeReservation(data[0].nazwa) : null}>
+              <Text style={styles.buttonText}>Usuń</Text>
             </TouchableOpacity>
         </View>
     </SafeAreaView>
@@ -117,10 +159,10 @@ const styles = StyleSheet.create({
           marginRight: 260,
           marginTop: 1,
     },
-  loginText:{
-    placeholderTextColor: "#FFFFFF",
-    color: "white",
-  },
+    buttonText:{
+        placeholderTextColor: "#FFFFFF",
+        color: "white",
+    },
 
   mytext:{
     height: 30,
