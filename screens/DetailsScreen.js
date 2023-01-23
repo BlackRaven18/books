@@ -51,6 +51,8 @@ export default function DetailsScreen({navigation}) {
 
               });
           }, []);
+          const [favoritesData, setFavoritesData] = useState([]);
+
   const [accelerometerData, setAccelerometerData] = useState({});
 
     useEffect(() => {
@@ -65,9 +67,9 @@ export default function DetailsScreen({navigation}) {
     const addToFavorites = async () => {
         try {
             const dataToAdd = {
-                nazwa: nazwa,
-                obraz: obraz,
-                rodzaj: rodzaj,
+                nazwa: route.params.nazwa,
+                obraz: route.params.obraz,
+                rodzaj: route.params.rodzaj,
             };
             await addDoc(collection(db, "users", userId, "ulubione"), dataToAdd);
         } catch (err) {
@@ -80,9 +82,9 @@ export default function DetailsScreen({navigation}) {
         const formattedDate = new Intl.DateTimeFormat('pl-PL', options).format(today)
         try {
             const dataToAdd = {
-                nazwa: nazwa,
+                nazwa: route.params.nazwa,
                 data: formattedDate,
-                obraz: obraz,
+                obraz: route.params.obraz,
             };
             await addDoc(collection(db, "users", userId, "rezerwacje"), dataToAdd);
         } catch (err) {
@@ -106,9 +108,9 @@ export default function DetailsScreen({navigation}) {
                 <Text style={styles.buttonText}>&lt;-</Text>
         </TouchableOpacity>
 
-        {data.length > 0 ? <Image style={styles.imagek} source={{uri: data[0].obraz}} /> : null}
-        {data.length > 0 ? <Text style={styles.mytexta}>{data[0].nazwa}</Text> : null}
-        {data.length > 0 ? <Text style={styles.mytextb}>{data[0].opis}</Text> : null}
+        {data.length > 0 ? <Image style={styles.imagek} source={{ uri: route.params.obraz }} /> : null}
+              {data.length > 0 ? <Text style={styles.mytexta}>{route.params.nazwa}</Text> : null}
+              {data.length > 0 ? <Text style={styles.mytextb}>{route.params.opis}</Text> : null}
         <View style={styles.sdview}>
             <TouchableOpacity style={styles.loginBtn} onPress={addReservation}>
                 <Text style={styles.buttonText}>Rezerwuj</Text>

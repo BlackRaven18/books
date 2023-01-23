@@ -1,11 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-
-import {
-  getAuth, signInWithEmailAndPassword
-} from "firebase/auth";
-
+import LoggedUserManager from "../LoggedUserManager"
+import {getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import app from "../firestoreConfig";
 
@@ -18,6 +15,8 @@ export default function LoginScreen({navigation}) {
   const db = getFirestore(app);
   const auth = getAuth();
 
+  const instance = LoggedUserManager.getInstance();
+
   const updateInputVal = (val, prop) => {
     if (prop === 'email') setEmail(val);
     else setPassword(val);
@@ -26,6 +25,7 @@ export default function LoginScreen({navigation}) {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       if(user){
+        instance.setEmail(user.email);
         navigation.navigate("Books");
       }
     })
@@ -39,7 +39,8 @@ export default function LoginScreen({navigation}) {
       // Signed in 
       const user = userCredential.user;
       console.log("Signed in: ", user.email);
-      // ...
+      console.log("emm");
+    
     })
     .catch((error) => {
       const errorCode = error.code;
