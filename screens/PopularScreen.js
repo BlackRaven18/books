@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   flatListStyle: {
       backgroundColor: 'white',
       marginHorizontal: 20,
-      overflow: 'Scroll',
+      overflow: 'scroll',
     },
     sview: {
            flexDirection: 'row',
