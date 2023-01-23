@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
 
    imagek: {
       marginBottom: 5,
-      height: 300,
+      height: 350,
       width: 300,
       marginRight: 0,
       marginTop: 0,
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
       height: 30,
       marginTop: 0,
       marginBottom: 0,
-      marginRight: 200,
+      marginRight: 230,
     },
  mytextb:{
         height: 30,
