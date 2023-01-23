@@ -38,10 +38,10 @@ export default function PopularScreen({navigation}) {
     }, [])
 
     const [data, setData] = useState([]);
-            const [userId, setUserId] = useState('7dtjsgPYcdEoptEirNYD');
+
             const db = getFirestore(app);
             useEffect(() => {
-                getDocs(collection(db, "users", userId, "popularne")).then((querySnapshot) => {
+                getDocs(collection(db, "popularne")).then((querySnapshot) => {
                     const newData = [];
                     querySnapshot.forEach((doc) => {
                         const docData = doc.data();
