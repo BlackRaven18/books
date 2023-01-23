@@ -34,7 +34,7 @@ export default function DetailsScreen({navigation}) {
             item.rodzaj.toLowerCase().includes(searchText.toLowerCase())
           );
           useEffect(() => {
-              getDocs(collection(db, "users", userId, "rejstr")).then((querySnapshot) => {
+              getDocs(collection(db, "rejestr")).then((querySnapshot) => {
                   const newData = [];
                   querySnapshot.forEach((doc) => {
                       const docData = doc.data();
