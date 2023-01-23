@@ -15,7 +15,7 @@ import { collection, getDocs, addDoc, getDoc, doc } from "firebase/firestore";
 
 export default function RegisterScreen({navigation}) {
     const [data, setData] = useState([]);
-        const [userId, setUserId] = useState('7dtjsgPYcdEoptEirNYD');
+
         const [searchText, setSearchText] = useState('');
         const db = getFirestore(app);
         const filteredData = data.filter(item =>
@@ -23,7 +23,7 @@ export default function RegisterScreen({navigation}) {
           item.rodzaj.toLowerCase().includes(searchText.toLowerCase())
         );
         useEffect(() => {
-            getDocs(collection(db, "users", userId, "rejstr")).then((querySnapshot) => {
+            getDocs(collection(db, "rejestr")).then((querySnapshot) => {
                 const newData = [];
                 querySnapshot.forEach((doc) => {
                     const docData = doc.data();
