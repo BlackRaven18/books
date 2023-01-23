@@ -125,6 +125,21 @@ export default function DetailsScreen({navigation}) {
                     deleteDoc(docRef) .then(() => { console.log("Entire Document has been deleted successfully.") }) .catch(error => { console.log(error); });
                     //deleteDoc(docRef2) .then(() => { console.log("Entire Document has been deleted successfully.") }) .catch(error => { console.log(error); })
          };
+         const removeReservation3 = async () => {
+                     const qRef = query(collection(db, "users", userId, "ulubione"), where("nazwa", "==", route.params.nazwa));
+                     const qSnap = await getDocs(qRef);
+                     qSnap.forEach((doc) => {
+                         //console.log(doc.id);
+                         removeReservation4(doc.id);
+                     });
+         };
+         const removeReservation4 = async (zmienna2) => {
+                             console.log(zmienna2);
+                             const docRef2 = doc(db, "users", userId, "ulubione", zmienna2);
+                             //const docRef2 = doc(db, "users", userId, "ulubione", "6TmLZFAXnykIyW8YD6aI");
+                             deleteDoc(docRef2) .then(() => { console.log("Entire Document has been deleted successfully.") }) .catch(error => { console.log(error); });
+                             //deleteDoc(docRef2) .then(() => { console.log("Entire Document has been deleted successfully.") }) .catch(error => { console.log(error); })
+         };
   return (
     <SafeAreaView style={styles.container}>
         <Image style={styles.image} source={require("../assets/log2.png")} />
@@ -146,7 +161,7 @@ export default function DetailsScreen({navigation}) {
             <TouchableOpacity style={styles.loginBtn} onPress={addToFavorites}>
               <Text style={styles.buttonText}>Ulubione</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.loginBtn} onPress={data.length !== 0 ? () => removeReservation(data[0].nazwa) : null}>
+            <TouchableOpacity style={styles.loginBtn} onPress={data.length !== 0 ? () => removeReservation(data[0].nazwa)&&removeReservation3(data[0].nazwa) : null}>
               <Text style={styles.buttonText}>Usuń</Text>
             </TouchableOpacity>
         </View>
