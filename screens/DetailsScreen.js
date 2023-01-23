@@ -85,7 +85,6 @@ export default function DetailsScreen({navigation}) {
                 nazwa: route.params.nazwa,
                 data: formattedDate,
                 obraz: route.params.obraz,
-                id: theId,
             };
             await addDoc(collection(db, "users", userId, "rezerwacje"), dataToAdd);
         } catch (err) {
