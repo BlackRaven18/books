@@ -15,7 +15,7 @@ import {
 
 import { getFirestore } from "firebase/firestore";
 import app from "../firestoreConfig"
-import { collection, getDocs, addDoc, getDoc, doc, deleteDoc, getDocumentId } from "firebase/firestore";
+import { collection, query, where, getDocs, addDoc, getDoc, doc, deleteDoc, getDocumentId } from "firebase/firestore";
 import { useRoute } from '@react-navigation/native';
 
 export default function DetailsScreen({navigation}) {
@@ -85,18 +85,47 @@ export default function DetailsScreen({navigation}) {
                 nazwa: route.params.nazwa,
                 data: formattedDate,
                 obraz: route.params.obraz,
+                id: theId,
             };
             await addDoc(collection(db, "users", userId, "rezerwacje"), dataToAdd);
         } catch (err) {
             console.error(err);
         }
     };
+        /*const removeReservation = async () => {
+            const qRef = query(collection(db, "users", userId, "rezerwacje"), where("nazwa", "==", route.params.nazwa));
+            const qSnap = await getDocs(qRef);
+            qSnap.forEach((doc) => {
+                console.log(doc.id);
+                const zmienna=doc.id;
+                console.log(zmienna);
+                //const docRef = doc(db, "users", userId, "rezerwacje", "ypch7REQN4kzDk1oSptH");
+                //await deleteDoc(docRef).then(() => { console.log("Entire Document has been deleted successfully.") }) .catch(error => { console.log(error); });
+                //console.log(zmienna);
+                //const docRef2 = doc(db, "users", userId, "rezerwacje", "ypch7REQN4kzDk1oSptH");
+                //deleteDoc(docRef2).then(() => { console.log("Entire Document has been deleted successfully.") }) .catch(error => { console.log(error); });
+                const docRef = doc(db, "users", userId, "rezerwacje", "ypch7REQN4kzDk1oSptH");
+                deleteDoc(docRef) .then(() => { console.log("Entire Document has been deleted successfully.") }) .catch(error => { console.log(error); });
+            });
+            //const docRef2 = doc(db, "users", userId, "rezerwacje", doc.id);
+            //deleteDoc(docRef) .then(() => { console.log("Entire Document has been deleted successfully.") }) .catch(error => { console.log(error); });
+            //deleteDoc(docRef2) .then(() => { console.log("Entire Document has been deleted successfully.") }) .catch(error => { console.log(error); })
+        };*/
         const removeReservation = async () => {
-            const docRef = doc(db, "users", userId, "rezerwacje", "6TmLZFAXnykIyW8YD6aI");
-            const docRef2 = doc(db, "users", userId, "ulubione", "6TmLZFAXnykIyW8YD6aI");
-            deleteDoc(docRef) .then(() => { console.log("Entire Document has been deleted successfully.") }) .catch(error => { console.log(error); });
-            deleteDoc(docRef) .then(() => { console.log("Entire Document has been deleted successfully.") }) .catch(error => { console.log(error); })
+            const qRef = query(collection(db, "users", userId, "rezerwacje"), where("nazwa", "==", route.params.nazwa));
+            const qSnap = await getDocs(qRef);
+            qSnap.forEach((doc) => {
+                //console.log(doc.id);
+                removeReservation2(doc.id);
+            });
         };
+        const removeReservation2 = async (zmienna) => {
+                    console.log(zmienna);
+                    const docRef = doc(db, "users", userId, "rezerwacje", zmienna);
+                    //const docRef2 = doc(db, "users", userId, "ulubione", "6TmLZFAXnykIyW8YD6aI");
+                    deleteDoc(docRef) .then(() => { console.log("Entire Document has been deleted successfully.") }) .catch(error => { console.log(error); });
+                    //deleteDoc(docRef2) .then(() => { console.log("Entire Document has been deleted successfully.") }) .catch(error => { console.log(error); })
+         };
   return (
     <SafeAreaView style={styles.container}>
         <Image style={styles.image} source={require("../assets/log2.png")} />
