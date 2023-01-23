@@ -14,19 +14,29 @@ import { Barometer } from 'expo-sensors';
 import { getFirestore } from "firebase/firestore";
 import app from "../firestoreConfig"
 import { collection, getDocs, addDoc, getDoc, doc } from "firebase/firestore";
+import LoggedUserManager from '../LoggedUserManager';
 
 export default function PopularScreen({navigation}) {
   const [barometerData, setBarometerData] = useState({});
+
+  const loggedUserManager = LoggedUserManager.getInstance();
 
     useEffect(() => {
       const subscribe = Barometer.addListener(barometerData => {
         setBarometerData(barometerData);
       });
 
+  
+
       return () => {
         subscribe.remove();
       };
     }, []);
+
+    useEffect(() => {
+      console.log("email z singeltona:" + loggedUserManager.getEmail());
+    }, [])
+
     const [data, setData] = useState([]);
             const [userId, setUserId] = useState('7dtjsgPYcdEoptEirNYD');
             const db = getFirestore(app);
@@ -61,7 +71,7 @@ export default function PopularScreen({navigation}) {
         ) : null }
         <FlatList
                          data={data}
-                         renderItem={(item) => { console.log(item); return(
+                         renderItem={(item) => { return(
                              <View style={styles.sview}>
                                 <View>
                                  <Image style={styles.imagek} source={{uri: item.item.obraz}} />
@@ -77,7 +87,7 @@ export default function PopularScreen({navigation}) {
                      />
                      <FlatList
                                               data={data}
-                                              renderItem={(item) => { console.log(item); return(
+                                              renderItem={(item) => { return(
                                                   <View style={styles.sview}>
                                                     <View>
                                                       <Image style={styles.imagek} source={{uri: item.item.obrazd}} />
