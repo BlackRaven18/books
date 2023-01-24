@@ -65,7 +65,7 @@ function BottomTabs() {
       <Tab.Screen name="Rejestr" component={RegisterScreen} options={{headerShown: false}}/>
       <Tab.Screen name="Rezerwacje" component={ReservationsScreen} options={{headerShown: false, unmountOnBlur: true}}/>
       <Tab.Screen name="Ulubione" component={FavouriteScreen} options={{headerShown: false, unmountOnBlur: true}}/>
-      <Tab.Screen name="Profil" component={ProfileScreen} options={{headerShown: false}}/>
+      <Tab.Screen name="Profil" component={ProfileScreen} options={{headerShown: false, unmountOnBlur: true}}/>
     </Tab.Navigator>
   );
 }

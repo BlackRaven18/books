@@ -2,11 +2,13 @@ import { collection, getDocs, getFirestore } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { FlatList, Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import app from "../firestoreConfig";
+import LoggedUserManager from "../LoggedUserManager"
 
 export default function FavouriteScreen({navigation}) {
-
+const loggedUserManager = LoggedUserManager.getInstance();
+    const zmienna = loggedUserManager.getId();
+    const [userId, setUserId] = useState(zmienna);
     const [data, setData] = useState([]);
-    const [userId, setUserId] = useState('7dtjsgPYcdEoptEirNYD');
     const db = getFirestore(app);
     useEffect(() => {
         getDocs(collection(db, "users", userId, "ulubione")).then((querySnapshot) => {

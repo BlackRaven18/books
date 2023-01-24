@@ -12,10 +12,13 @@ import {
 import { getFirestore } from "firebase/firestore";
 import app from "../firestoreConfig"
 import { collection, getDocs, addDoc, getDoc, doc } from "firebase/firestore";
+import LoggedUserManager from "../LoggedUserManager"
 
 export default function ReservationsScreen({navigation}) {
+    const loggedUserManager = LoggedUserManager.getInstance();
+    const zmienna = loggedUserManager.getId();
+    const [userId, setUserId] = useState(zmienna);
     const [data, setData] = useState([]);
-        const [userId, setUserId] = useState('7dtjsgPYcdEoptEirNYD');
         const db = getFirestore(app);
         useEffect(() => {
             getDocs(collection(db, "users", userId, "rezerwacje")).then((querySnapshot) => {

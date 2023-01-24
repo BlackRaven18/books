@@ -17,10 +17,13 @@ import { getFirestore } from "firebase/firestore";
 import app from "../firestoreConfig"
 import { collection, query, where, getDocs, addDoc, getDoc, doc, deleteDoc, getDocumentId } from "firebase/firestore";
 import { useRoute } from '@react-navigation/native';
+import LoggedUserManager from "../LoggedUserManager"
 
 export default function DetailsScreen({navigation}) {
+const loggedUserManager = LoggedUserManager.getInstance();
+    const zmienna = loggedUserManager.getId();
+    const [userId, setUserId] = useState(zmienna);
   const [data, setData] = useState([]);
-          const [userId, setUserId] = useState('7dtjsgPYcdEoptEirNYD');
           const route = useRoute();
           const [nazwa, setNazwa] = useState(route.params.nazwa);
           const [obraz, setObraz] = useState(route.params.obraz);

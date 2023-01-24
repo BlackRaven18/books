@@ -3,14 +3,19 @@ import { doc, getDoc, getFirestore } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import app from "../firestoreConfig";
+import LoggedUserManager from "../LoggedUserManager"
 
 const auth = getAuth();
 
 
 
 export default function ProfileScreen({navigation}) {
+
+  const loggedUserManager = LoggedUserManager.getInstance();
+  const zmienna = loggedUserManager.getId();
+
+  const [userId, setUserId] = useState(zmienna);
   const [data, setData] = useState([]);
-  const [userId, setUserId] = useState('7dtjsgPYcdEoptEirNYD');
     const db = getFirestore(app);
     useEffect(() => {
             getDoc(doc(db, "users", userId)).then((querySnapshot) => {

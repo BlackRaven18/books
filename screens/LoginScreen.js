@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { ActivityIndicator, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import LoggedUserManager from "../LoggedUserManager"
 import {getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, query, where, getDocs, Doc, collection } from "firebase/firestore";
 import app from "../firestoreConfig";
 
 export default function LoginScreen({navigation}) {
@@ -26,12 +26,24 @@ export default function LoginScreen({navigation}) {
     const unsubscribe = auth.onAuthStateChanged(user => {
       if(user){
         instance.setEmail(user.email);
+        searchUser(user.email);
         navigation.navigate("Books");
       }
     })
 
     return unsubscribe;
   }, []);
+  const searchUser = async (email) => {
+       const qRef = query(collection(db, "users"), where("email", "==", email));
+           const qSnap = await getDocs(qRef);
+           qSnap.forEach((doc) => {
+              console.log(doc.id);
+              const identyfikator=doc.id;
+              instance.setId(identyfikator);
+              const cosik=instance.getId();
+              console.log(cosik);
+           });
+           }
 
   const userLogin = () => {
     signInWithEmailAndPassword(auth, email, password)
