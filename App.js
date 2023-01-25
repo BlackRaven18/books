@@ -36,6 +36,7 @@ function MyStack() {
 function BottomTabs() {
   return (
     <Tab.Navigator
+      initialRouteName="Popularne"
         screenOptions={({route})=>({
             tabBarIcon:({focused, color, size})=>{
                 let iconName;
@@ -87,7 +88,8 @@ function App()
   return (
     <NativeBaseProvider theme={theme}>
     <NavigationContainer>
-   <Drawer.Navigator useLegacyImplementation={true}
+   <Drawer.Navigator 
+   useLegacyImplementation={true}
     screenOptions={{
       headerTitle: 'Books',
       headerStyle:{
@@ -97,7 +99,7 @@ function App()
     }}
    >
       <Drawer.Screen name="Panel logowania" component={MyStack} />
-      <Drawer.Screen name="Books" component={BottomTabs} />
+      <Drawer.Screen name="Books" component={BottomTabs} options={{unmountOnBlur:true}}/>
     </Drawer.Navigator>
     </NavigationContainer>
     </NativeBaseProvider>

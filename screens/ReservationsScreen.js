@@ -14,47 +14,49 @@ import app from "../firestoreConfig"
 import { collection, getDocs, addDoc, getDoc, doc } from "firebase/firestore";
 import LoggedUserManager from "../LoggedUserManager"
 
-export default function ReservationsScreen({navigation}) {
-    const loggedUserManager = LoggedUserManager.getInstance();
-    const zmienna = loggedUserManager.getId();
-    const [userId, setUserId] = useState(zmienna);
-    const [data, setData] = useState([]);
-        const db = getFirestore(app);
-        useEffect(() => {
-            getDocs(collection(db, "users", userId, "rezerwacje")).then((querySnapshot) => {
-                const newData = [];
-                querySnapshot.forEach((doc) => {
-                    const docData = doc.data();
-                    newData.push({
-                        id: doc.id,
-                        nazwa: docData.nazwa,
-                        data: docData.data,
-                        obraz: docData.obraz,
-                    });
-                    //rconsole.log(newData);
-                });
-                setData(newData);
+export default function ReservationsScreen({ navigation }) {
+  const loggedUserManager = LoggedUserManager.getInstance();
+  const zmienna = loggedUserManager.getId();
+  const [userId, setUserId] = useState(zmienna);
+  const [data, setData] = useState([]);
+  const db = getFirestore(app);
+  useEffect(() => {
+    getDocs(collection(db, "users", userId, "rezerwacje")).then((querySnapshot) => {
+      const newData = [];
+      querySnapshot.forEach((doc) => {
+        const docData = doc.data();
+        newData.push({
+          id: doc.id,
+          nazwa: docData.nazwa,
+          data: docData.data,
+          obraz: docData.obraz,
+        });
+        //rconsole.log(newData);
+      });
+      setData(newData);
 
-            });
-        }, []);
+    });
+  }, []);
   return (
     <SafeAreaView style={styles.container}>
-        <Image style={styles.image} source={require("../assets/log2.png")} />
-        <Text style={styles.mytext}>Rezerwacje</Text>
-            <FlatList
-                             data={data}
-                             renderItem={(item) => { console.log(item); return(
-                                 <View style={styles.sview}>
-                                     <Image style={styles.imagek} source={{uri: item.item.obraz}} />
-                                     <View>
-                                     <Text style={styles.mytexta}>{item.item.nazwa}</Text>
-                                     <Text style={styles.mytexta}>{item.item.data}</Text>
-                                     </View>
-                                 </View>
-                             )}}
-                             keyExtractor={item => item.id}
-                             style={styles.scrollView}
-            />
+      <Image style={styles.image} source={require("../assets/log2.png")} />
+      <Text style={styles.mytext}>Rezerwacje</Text>
+      <FlatList
+        data={data}
+        renderItem={(item) => {
+          console.log(item); return (
+            <View style={styles.sview}>
+              <Image style={styles.imagek} source={{ uri: item.item.obraz }} />
+              <View>
+                <Text style={styles.mytexta}>{item.item.nazwa}</Text>
+                <Text style={styles.mytexta}>{item.item.data}</Text>
+              </View>
+            </View>
+          )
+        }}
+        keyExtractor={item => item.id}
+        style={styles.scrollView}
+      />
     </SafeAreaView>
   );
 }
@@ -68,54 +70,54 @@ const styles = StyleSheet.create({
   },
 
   scrollView: {
-      backgroundColor: 'white',
-      marginHorizontal: 20,
-    },
-    sview: {
-       flexDirection: 'row',
-    },
+    backgroundColor: 'white',
+    marginHorizontal: 20,
+  },
+  sview: {
+    flexDirection: 'row',
+  },
 
   image: {
     marginBottom: 5,
   },
 
-   imagek: {
-      marginBottom: 5,
-      height: 145,
-      width: 80,
-      marginRight: 30,
-      marginTop: 1,
-    },
-    imagek2: {
-          marginBottom: 5,
-          height: 150,
-          width: 100,
-          marginLeft: 1,
-          marginTop: 1,
-    },
+  imagek: {
+    marginBottom: 5,
+    height: 145,
+    width: 80,
+    marginRight: 30,
+    marginTop: 1,
+  },
+  imagek2: {
+    marginBottom: 5,
+    height: 150,
+    width: 100,
+    marginLeft: 1,
+    marginTop: 1,
+  },
 
-  mytext:{
+  mytext: {
     height: 30,
     marginBottom: 20,
   },
 
-  mytexta:{
-      height: 30,
-      marginTop: 0,
-      marginBottom: 0,
-      marginRight: 150,
-      textAlign: 'left',
-    },
- mytextb:{
-       height: 30,
-       marginTop: 0,
-       marginBottom: 0,
-       marginLeft:25,
-     },
+  mytexta: {
+    height: 30,
+    marginTop: 0,
+    marginBottom: 0,
+    marginRight: 150,
+    textAlign: 'left',
+  },
+  mytextb: {
+    height: 30,
+    marginTop: 0,
+    marginBottom: 0,
+    marginLeft: 25,
+  },
 
-  newtext:{
+  newtext: {
     marginRight: 220,
-    marginBottom:10,
+    marginBottom: 10,
   },
 
   inputView: {
