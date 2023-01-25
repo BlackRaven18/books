@@ -6,7 +6,7 @@ import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import { collection, getDocs, getFirestore } from "firebase/firestore";
 import app from "../firestoreConfig";
 
-export default function RegistrationScreen({navigation}) {
+export default function RegistrationScreen({ navigation }) {
 
     const [displayName, setDisplayName] = useState('');
     const [displaySurname, setDisplaySurname] = useState('');
@@ -35,8 +35,13 @@ export default function RegistrationScreen({navigation}) {
                 // Signed in
                 const user = userCredential.user;
                 console.log(user);
-                console.log('user');
-                // ...
+
+                auth.signOut()
+                    .then(() => {
+                        console.log("user cretaed account but we logged it out");
+                        navigation.navigate("Logowanie");
+                    })
+                    .catch(error => alert(error.message));
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -44,16 +49,17 @@ export default function RegistrationScreen({navigation}) {
                 console.log(error.message)
                 // ..
             });
-        navigation.navigate("Logowanie", {language: "english"})
+
+
     };
 
     return (
 
         <View style={styles.container}>
 
-            <Image style={styles.image} source={require("../assets/log2.png")}/>
+            <Image style={styles.image} source={require("../assets/log2.png")} />
             <Text style={styles.mytext}>Rejestracja</Text>
-            <StatusBar style="auto"/>
+            <StatusBar style="auto" />
             <Text style={styles.newtext}>Imię</Text>
             <View style={styles.inputView}>
                 <TextInput
@@ -62,7 +68,7 @@ export default function RegistrationScreen({navigation}) {
                     placeholderTextColor="#acaebd"
                     onChangeText={displayName => setDisplayName(displayName)}
                     value={displayName}
-                    //onChangeText={(login) => setLogin(login)}
+                //onChangeText={(login) => setLogin(login)}
                 />
             </View>
             <Text style={styles.nazwtext}>Nazwisko</Text>
@@ -83,7 +89,7 @@ export default function RegistrationScreen({navigation}) {
                     placeholderTextColor="#acaebd"
                     onChangeText={email => setEmail(email)}
                     value={email}
-                    //onChangeText={(login) => setLogin(login)}
+                //onChangeText={(login) => setLogin(login)}
                 />
             </View>
             <Text style={styles.newtext}>Hasło</Text>
@@ -96,14 +102,14 @@ export default function RegistrationScreen({navigation}) {
                     value={password}
                     maxLength={15}
                     secureTextEntry={true}
-                    //onChangeText={(login) => setLogin(login)}
+                //onChangeText={(login) => setLogin(login)}
                 />
             </View>
 
             <TouchableOpacity style={styles.loginBtn} onPress={handleSignUp}>
                 <Text style={styles.loginText}>Rejestruj</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate("Logowanie", {language: "english"})}>
+            <TouchableOpacity onPress={() => navigation.navigate("Logowanie", { language: "english" })}>
                 <Text style={styles.forgot_button}>Logowanie</Text>
             </TouchableOpacity>
         </View>
