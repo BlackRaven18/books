@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
-import { collection, getDocs, getFirestore } from "firebase/firestore";
+import { collection, getDocs, getFirestore, set, doc, firestore, firebase, updateDoc, setDoc } from "firebase/firestore";
 import app from "../firestoreConfig";
 
 export default function RegistrationScreen({navigation}) {
@@ -34,6 +34,7 @@ export default function RegistrationScreen({navigation}) {
             .then((userCredential) => {
                 // Signed in
                 const user = userCredential.user;
+                dodajKolekcje();
                 console.log(user);
                 console.log('user');
                 // ...
@@ -46,6 +47,16 @@ export default function RegistrationScreen({navigation}) {
             });
         navigation.navigate("Logowanie", {language: "english"})
     };
+
+    const dodajKolekcje = async () => {
+        const userRef = doc(collection(db, "users"));
+        const data = {
+          imie: displayName,
+          nazwisko: displaySurname,
+          email: email
+        };
+        await setDoc(userRef, data);
+    }
 
     return (
 

@@ -51,8 +51,6 @@ export default function LoginScreen({navigation}) {
       // Signed in 
       const user = userCredential.user;
       console.log("Signed in: ", user.email);
-      console.log("emm");
-    
     })
     .catch((error) => {
       const errorCode = error.code;
