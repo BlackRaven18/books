@@ -12,22 +12,22 @@ export default function ReservationsScreen({ navigation }) {
   const db = getFirestore(app);
   useEffect(() => {
     getDocs(collection(db, "users", userId, "rezerwacje"))
-    .then((querySnapshot) => {
-      const newData = [];
-      querySnapshot.forEach((doc) => {
-        const docData = doc.data();
-        newData.push({
-          id: doc.id,
-          nazwa: docData.nazwa,
-          data: docData.data,
-          obraz: docData.obraz,
-        });
-      }).
-      setData(newData);
+      .then((querySnapshot) => {
+        const newData = [];
+        querySnapshot.forEach((doc) => {
+          const docData = doc.data();
+          newData.push({
+            id: doc.id,
+            nazwa: docData.nazwa,
+            data: docData.data,
+            obraz: docData.obraz,
+          });
+        })
+          setData(newData);
 
-    }).catch(error => {
-      setData([]);
-    });
+      }).catch(error => {
+        //setData([]);
+      });
   }, []);
   return (
     <SafeAreaView style={styles.container}>
@@ -36,7 +36,7 @@ export default function ReservationsScreen({ navigation }) {
       <FlatList
         data={data}
         renderItem={(item) => {
-          console.log(item); return (
+          return (
             <View style={styles.sview}>
               <Image style={styles.imagek} source={{ uri: item.item.obraz }} />
               <View>

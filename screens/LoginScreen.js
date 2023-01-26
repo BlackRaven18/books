@@ -27,7 +27,6 @@ export default function LoginScreen({navigation}) {
       if(user){
         instance.setEmail(user.email);
         searchUser(user.email);
-        navigation.navigate("Books");
       }
     })
 
@@ -51,6 +50,7 @@ export default function LoginScreen({navigation}) {
       // Signed in 
       const user = userCredential.user;
       console.log("Signed in: ", user.email);
+      navigation.navigate("Books");
     })
     .catch((error) => {
       const errorCode = error.code;

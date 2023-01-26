@@ -2,10 +2,9 @@ import { Accelerometer } from 'expo-sensors';
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
-
 import {
   Image, SafeAreaView, Text, TouchableOpacity
-} from "react-native";
+} from "react-native"
 
 import { useRoute } from '@react-navigation/native';
 import { addDoc, collection, deleteDoc, doc, getDocs, getFirestore, query, where } from "firebase/firestore";
@@ -86,7 +85,7 @@ export default function DetailsScreen({ navigation }) {
   const addReservation = async () => {
     const today = new Date();
     const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-    const formattedDate = new Intl.DateTimeFormat('pl-PL', options).format(today)
+    const formattedDate = new Intl.DateTimeFormat('pl-PL', options).format(today);
     try {
       const dataToAdd = {
         nazwa: route.params.nazwa,
@@ -94,6 +93,7 @@ export default function DetailsScreen({ navigation }) {
         obraz: route.params.obraz,
       };
       await addDoc(collection(db, "users", userId, "rezerwacje"), dataToAdd);
+      console.log("zarezerwowano nowa ksiazke");
     } catch (err) {
       console.error(err);
     }
