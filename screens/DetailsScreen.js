@@ -1,10 +1,7 @@
+import { useIsFocused } from '@react-navigation/native';
 import { Accelerometer } from 'expo-sensors';
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View } from 'react-native';
-import { useIsFocused } from '@react-navigation/native';
-import {
-  Image, SafeAreaView, Text, TouchableOpacity
-} from "react-native"
+import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { useRoute } from '@react-navigation/native';
 import { addDoc, collection, deleteDoc, doc, getDocs, getFirestore, query, where } from "firebase/firestore";
@@ -123,7 +120,6 @@ export default function DetailsScreen({ navigation }) {
   const removeReservation4 = async (zmienna2) => {
     console.log(zmienna2);
     const docRef2 = doc(db, "users", userId, "ulubione", zmienna2);
-    //const docRef2 = doc(db, "users", userId, "ulubione", "6TmLZFAXnykIyW8YD6aI");
     deleteDoc(docRef2)
       .then(() => { console.log("Entire Document has been deleted successfully.") })
       .catch(error => { console.log(error); });

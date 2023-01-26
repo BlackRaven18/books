@@ -5,7 +5,7 @@ import { FlatList, Image, SafeAreaView, StyleSheet, Text, View } from 'react-nat
 import app from "../firestoreConfig";
 
 export default function PopularScreen({ navigation }) {
-  
+
   const [barometerData, setBarometerData] = useState({});
 
   useEffect(() => {
@@ -67,7 +67,7 @@ export default function PopularScreen({ navigation }) {
         data={data}
         renderItem={(item) => {
           return (
-            <View style={[styles.sview, {marginTop: 10}]}>
+            <View style={[styles.sview, { marginTop: 10 }]}>
               <View>
                 <Image style={styles.imagek} source={{ uri: item.item.obraz }} />
 
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     height: 30,
     marginTop: 0,
     marginBottom: 0,
-    textAlign:'center',
+    textAlign: 'center',
     color: "green",
   },
 
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     height: 30,
     marginTop: 0,
     marginBottom: 0,
-    textAlign:'center',
+    textAlign: 'center',
     color: "orange",
   },
 
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     height: 30,
     marginTop: 0,
     marginBottom: 0,
-    textAlign:'center',
+    textAlign: 'center',
     color: "red",
   },
 

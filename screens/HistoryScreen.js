@@ -1,10 +1,10 @@
+import { useIsFocused } from '@react-navigation/native';
 import { Accelerometer } from 'expo-sensors';
+import { collection, getDocs, getFirestore } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { FlatList, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useIsFocused } from '@react-navigation/native';
-import { collection, getDocs, getFirestore } from "firebase/firestore";
 import app from "../firestoreConfig";
-import LoggedUserManager from "../LoggedUserManager"
+import LoggedUserManager from "../LoggedUserManager";
 
 export default function HistoryScreen({ navigation }) {
 
