@@ -24,7 +24,7 @@ export default function HistoryScreen({ navigation }) {
 
     if (isFocused) {
       if (accelerometerData.x > 0.53) {
-        navigation.navigate("Profile");
+        navigation.navigate("Profil");
       }
     }
 

@@ -39,6 +39,9 @@ export default function RegistrationScreen({ navigation }) {
                 dodajKolekcje();
                 console.log(user);
                 console.log('user');
+                navigation.navigate("Books", {
+                    screen: "Popularne"
+                })
                 // ...
             })
             .catch((error) => {
@@ -47,7 +50,6 @@ export default function RegistrationScreen({ navigation }) {
                 console.log(error.message)
                 // ..
             });
-        navigation.navigate("Logowanie", { language: "english" })
     };
 
     const favoriteData = {
