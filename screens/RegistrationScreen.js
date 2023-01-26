@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
-import { collection, getDocs, getFirestore, set, doc, firestore, firebase, updateDoc, setDoc, query, where } from "firebase/firestore";
+import { collection, doc, getDocs, getFirestore, query, setDoc, where } from "firebase/firestore";
 import app from "../firestoreConfig";
 import LoggedUserManager from '../LoggedUserManager';
 
@@ -53,14 +53,14 @@ export default function RegistrationScreen({ navigation }) {
     };
 
     const favoriteData = {
-                x: "xxx"
-     };
-     const reservationData = {
-                     x: "xxx"
-          };
-          const historyData = {
-                          x: "xxx"
-               };
+        nazwa: "null"
+    };
+    const reservationData = {
+        nazwa: "null"
+    };
+    const historyData = {
+        nazwa: "null"
+    };
 
     const dodajKolekcje = async () => {
         const loggedUserManager = LoggedUserManager.getInstance();
@@ -77,26 +77,25 @@ export default function RegistrationScreen({ navigation }) {
 
         try {
             await setDoc(userRef, data);
-            const zmienna=searchUser();
+            const zmienna = searchUser();
 
         } catch (error) {
             console.log(error)
         }
     }
     const searchUser = async () => {
-                    const loggedUserManager = LoggedUserManager.getInstance();
-                    const qRef = query(collection(db, "users"), where("email", "==", email));
-                    const qSnap = await getDocs(qRef);
-                    qSnap.forEach((doc) => {
-                        console.log(doc.id);
-                        loggedUserManager.setId(doc.id);
-                        const wynik=doc.id;
-                        console.log("wynik:"+wynik);
-                        dodajKolekcje2(wynik);
-                    });
-                };
+        const loggedUserManager = LoggedUserManager.getInstance();
+        const qRef = query(collection(db, "users"), where("email", "==", email));
+        const qSnap = await getDocs(qRef);
+        qSnap.forEach((doc) => {
+            console.log(doc.id);
+            loggedUserManager.setId(doc.id);
+            const wynik = doc.id;
+            console.log("wynik:" + wynik);
+            dodajKolekcje2(wynik);
+        });
+    };
     const dodajKolekcje2 = async (zmienna) => {
-        console.log("zmienna: "+zmienna);
         const favoriteRef = doc(collection(db, "users", zmienna, "ulubione"));
         const reservationRef = doc(collection(db, "users", zmienna, "rezerwacje"));
         const historyRef = doc(collection(db, "users", zmienna, "historia"));
@@ -161,7 +160,7 @@ export default function RegistrationScreen({ navigation }) {
             <TouchableOpacity style={styles.loginBtn} onPress={handleSignUp}>
                 <Text style={styles.loginText}>Rejestruj</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate("Logowanie", { language: "english" })}>
+            <TouchableOpacity onPress={() => navigation.navigate("Logowanie")}>
                 <Text style={styles.forgot_button}>Logowanie</Text>
             </TouchableOpacity>
         </View>

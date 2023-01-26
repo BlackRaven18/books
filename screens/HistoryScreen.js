@@ -59,15 +59,17 @@ export default function HistoryScreen({ navigation }) {
       <FlatList
         data={data}
         renderItem={(item) => {
-          return (
-            <View style={styles.sview}>
-              <Image style={styles.imagek} source={{ uri: item.item.obraz }} />
-              <View>
-                <Text style={styles.mytexta}>{item.item.nazwa}</Text>
-                <Text style={styles.mytexta}>{item.item.data}</Text>
+          if (item.item.nazwa != "null") {
+            return (
+              <View style={styles.sview}>
+                <Image style={styles.imagek} source={{ uri: item.item.obraz }} />
+                <View>
+                  <Text style={styles.mytexta}>{item.item.nazwa}</Text>
+                  <Text style={styles.mytexta}>{item.item.data}</Text>
+                </View>
               </View>
-            </View>
-          )
+            )
+          }
         }}
         keyExtractor={item => item.id}
         style={styles.scrollView}

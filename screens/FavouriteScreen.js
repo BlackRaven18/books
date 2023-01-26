@@ -25,6 +25,7 @@ export default function FavouriteScreen({ navigation }) {
       });
       setData(newData);
 
+
     });
   }, []);
 
@@ -38,7 +39,7 @@ export default function FavouriteScreen({ navigation }) {
       <FlatList
         data={data}
         renderItem={(item) => {
-          if (!item.x) {
+          if (item.item.nazwa != "null") {
             return (
               <View style={styles.sview}>
                 <Image style={styles.imagek} source={{ uri: item.item.obraz }} />
@@ -49,7 +50,8 @@ export default function FavouriteScreen({ navigation }) {
               </View>
             )
           }
-        }}
+        }
+        }
         keyExtractor={item => item.id}
         style={styles.scrollView}
       />
