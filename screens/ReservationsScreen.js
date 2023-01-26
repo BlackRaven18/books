@@ -1,4 +1,4 @@
-import { collection, getDocs, getFirestore, QuerySnapshot } from "firebase/firestore";
+import { collection, getDocs, getFirestore } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { FlatList, Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import app from "../firestoreConfig";
