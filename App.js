@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { extendTheme, NativeBaseProvider } from 'native-base';
@@ -97,7 +97,8 @@ function App() {
           }}
         >
           <Drawer.Screen name="Panel logowania" component={MyStack} />
-          <Drawer.Screen name="Books" component={BottomTabs} />
+          <Drawer.Screen name="Rejestracja" component={RegistrationScreen} />
+          <Drawer.Screen name="Books" component={BottomTabs} options={{drawerItemStyle: {display: 'none'}}}/>
         </Drawer.Navigator>
       </NavigationContainer>
     </NativeBaseProvider>
