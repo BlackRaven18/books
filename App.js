@@ -24,7 +24,7 @@ const Drawer = createDrawerNavigator()
 function MyStack() {
   return (
     <Stack.Navigator
-    screenOptions={{headerShown: false}}>
+      screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Logowanie" component={LoginScreen} />
       <Stack.Screen name="Rejestracja" component={RegistrationScreen} />
       <Stack.Screen name="Opis" component={DetailsScreen} />
@@ -36,36 +36,36 @@ function MyStack() {
 function BottomTabs() {
   return (
     <Tab.Navigator
-        screenOptions={({route})=>({
-            tabBarIcon:({focused, color, size})=>{
-                let iconName;
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
 
-                if(route.name==='Popularne'){
-                    iconName=focused ? 'home' : 'home';
-                }
-                else if(route.name==='Rejestr'){
-                    iconName=focused ? 'search' : 'search';
-                }
-                else if(route.name==='Rezerwacje'){
-                    iconName=focused ? 'add-circle' : 'add-circle';
-                }
-                else if(route.name==='Ulubione'){
-                    iconName=focused ? 'heart' : 'heart';
-                }
-                else if(route.name==='Profil'){
-                    iconName=focused ? 'person' : 'person';
-                }
-                return <Ionicons name={iconName} size={size} color={color}/>;
-            },
-            tabBarActiveTintColor: 'tomato',
-            tabBarInactiveTintColor: 'black',
-        })}
-        >
-      <Tab.Screen name="Popularne" component={PopularScreen} options={{headerShown: false}}/>
-      <Tab.Screen name="Rejestr" component={RegisterScreen} options={{headerShown: false}}/>
-      <Tab.Screen name="Rezerwacje" component={ReservationsScreen} options={{headerShown: false, unmountOnBlur: true}}/>
-      <Tab.Screen name="Ulubione" component={FavouriteScreen} options={{headerShown: false, unmountOnBlur: true}}/>
-      <Tab.Screen name="Profil" component={ProfileScreen} options={{headerShown: false, unmountOnBlur: true}}/>
+          if (route.name === 'Popularne') {
+            iconName = focused ? 'home' : 'home';
+          }
+          else if (route.name === 'Rejestr') {
+            iconName = focused ? 'search' : 'search';
+          }
+          else if (route.name === 'Rezerwacje') {
+            iconName = focused ? 'add-circle' : 'add-circle';
+          }
+          else if (route.name === 'Ulubione') {
+            iconName = focused ? 'heart' : 'heart';
+          }
+          else if (route.name === 'Profil') {
+            iconName = focused ? 'person' : 'person';
+          }
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: 'tomato',
+        tabBarInactiveTintColor: 'black',
+      })}
+    >
+      <Tab.Screen name="Popularne" component={PopularScreen} options={{ headerShown: false }} />
+      <Tab.Screen name="Rejestr" component={RegisterScreen} options={{ headerShown: false }} />
+      <Tab.Screen name="Rezerwacje" component={ReservationsScreen} options={{ headerShown: false, unmountOnBlur: true }} />
+      <Tab.Screen name="Ulubione" component={FavouriteScreen} options={{ headerShown: false, unmountOnBlur: true }} />
+      <Tab.Screen name="Profil" component={ProfileScreen} options={{ headerShown: false, unmountOnBlur: true }} />
     </Tab.Navigator>
   );
 }
@@ -79,27 +79,26 @@ const newColorTheme = {
 };
 
 const theme = extendTheme({
-colors: newColorTheme,
+  colors: newColorTheme,
 });
 
-function App()
- {
+function App() {
   return (
     <NativeBaseProvider theme={theme}>
-    <NavigationContainer>
-   <Drawer.Navigator useLegacyImplementation={true}
-    screenOptions={{
-      headerTitle: 'Books',
-      headerStyle:{
-        backgroundColor: 'gray',
-      },
-      headerTintColor: 'white',
-    }}
-   >
-      <Drawer.Screen name="Panel logowania" component={MyStack} />
-      <Drawer.Screen name="Books" component={BottomTabs} />
-    </Drawer.Navigator>
-    </NavigationContainer>
+      <NavigationContainer>
+        <Drawer.Navigator useLegacyImplementation={true}
+          screenOptions={{
+            headerTitle: 'Books',
+            headerStyle: {
+              backgroundColor: 'gray',
+            },
+            headerTintColor: 'white',
+          }}
+        >
+          <Drawer.Screen name="Panel logowania" component={MyStack} />
+          <Drawer.Screen name="Books" component={BottomTabs} />
+        </Drawer.Navigator>
+      </NavigationContainer>
     </NativeBaseProvider>
   );
 }

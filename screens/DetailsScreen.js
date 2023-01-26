@@ -1,173 +1,155 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Button, View, FlatList } from 'react-native';
-import React, { useState } from "react";
-import { useEffect } from 'react';
 import { Accelerometer } from 'expo-sensors';
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 
 import {
-  Text,
-  Image,
-  TextInput,
-  TouchableOpacity,
-  SafeAreaView,
-  ScrollView,
+  Image, SafeAreaView, Text, TouchableOpacity
 } from "react-native";
 
-import { getFirestore } from "firebase/firestore";
-import app from "../firestoreConfig"
-import { collection, query, where, getDocs, addDoc, getDoc, doc, deleteDoc, getDocumentId } from "firebase/firestore";
 import { useRoute } from '@react-navigation/native';
-import LoggedUserManager from "../LoggedUserManager"
+import { addDoc, collection, deleteDoc, doc, getDocs, getFirestore, query, where } from "firebase/firestore";
+import app from "../firestoreConfig";
+import LoggedUserManager from "../LoggedUserManager";
 
-export default function DetailsScreen({navigation}) {
-const loggedUserManager = LoggedUserManager.getInstance();
-    const zmienna = loggedUserManager.getId();
-    const [userId, setUserId] = useState(zmienna);
+export default function DetailsScreen({ navigation }) {
+  const loggedUserManager = LoggedUserManager.getInstance();
+  const zmienna = loggedUserManager.getId();
+  const [userId, setUserId] = useState(zmienna);
   const [data, setData] = useState([]);
-          const route = useRoute();
-          const [nazwa, setNazwa] = useState(route.params.nazwa);
-          const [obraz, setObraz] = useState(route.params.obraz);
-          const [opis, setOpis] = useState(route.params.opis);
-          const [rodzaj, setRodzaj] = useState(route.params.rodzaj);
-          const [searchText, setSearchText] = useState('');
-          const db = getFirestore(app);
-
-          const filteredData = data.filter(item =>
-            item.nazwa.toLowerCase().includes(searchText.toLowerCase()) ||
-            item.rodzaj.toLowerCase().includes(searchText.toLowerCase())
-          );
-          useEffect(() => {
-              getDocs(collection(db, "rejestr")).then((querySnapshot) => {
-                  const newData = [];
-                  querySnapshot.forEach((doc) => {
-                      const docData = doc.data();
-                      newData.push({
-                          id: doc.id,
-                          nazwa: docData.nazwa,
-                          rodzaj: docData.rodzaj,
-                          obraz: docData.obraz,
-                          opis: docData.opis,
-                      });
-                      //rconsole.log(newData);
-                  });
-                  setData(newData.filter(item => item.nazwa === nazwa && item.obraz === obraz && item.opis === opis && item.rodzaj === rodzaj))
-
-              });
-          }, []);
-          const [favoritesData, setFavoritesData] = useState([]);
-
+  const route = useRoute();
+  const [nazwa, setNazwa] = useState(route.params.nazwa);
+  const [obraz, setObraz] = useState(route.params.obraz);
+  const [opis, setOpis] = useState(route.params.opis);
+  const [rodzaj, setRodzaj] = useState(route.params.rodzaj);
+  const [searchText, setSearchText] = useState('');
+  const isFocused = useIsFocused();
+  const [favoritesData, setFavoritesData] = useState([]);
   const [accelerometerData, setAccelerometerData] = useState({});
+  const db = getFirestore(app);
 
-    useEffect(() => {
-      const subscribe = Accelerometer.addListener(accelerometerData => {
-        setAccelerometerData(accelerometerData);
+  const filteredData = data.filter(item =>
+    item.nazwa.toLowerCase().includes(searchText.toLowerCase()) ||
+    item.rodzaj.toLowerCase().includes(searchText.toLowerCase())
+  );
+
+  useEffect(() => {
+    const subscribe = Accelerometer.addListener(accelerometerData => {
+      setAccelerometerData(accelerometerData);
+    });
+
+    if (isFocused) {
+      if (accelerometerData.x > 0.53) {
+        navigation.navigate("Rejestr");
+      }
+    }
+
+    return () => {
+      subscribe.remove();
+    };
+  }, [accelerometerData, isFocused]);
+
+  useEffect(() => {
+    getDocs(collection(db, "rejestr")).then((querySnapshot) => {
+      const newData = [];
+      querySnapshot.forEach((doc) => {
+        const docData = doc.data();
+        newData.push({
+          id: doc.id,
+          nazwa: docData.nazwa,
+          rodzaj: docData.rodzaj,
+          obraz: docData.obraz,
+          opis: docData.opis,
+        });
       });
+      setData(
+        newData.filter(
+          item => item.nazwa === nazwa
+            && item.obraz === obraz
+            && item.opis === opis
+            && item.rodzaj === rodzaj))
+    });
+  }, []);
 
-      return () => {
-        subscribe.remove();
+  const addToFavorites = async () => {
+    try {
+      const dataToAdd = {
+        nazwa: route.params.nazwa,
+        obraz: route.params.obraz,
+        rodzaj: route.params.rodzaj,
       };
-    }, []);
-    const addToFavorites = async () => {
-        try {
-            const dataToAdd = {
-                nazwa: route.params.nazwa,
-                obraz: route.params.obraz,
-                rodzaj: route.params.rodzaj,
-            };
-            await addDoc(collection(db, "users", userId, "ulubione"), dataToAdd);
-        } catch (err) {
-            console.error(err);
-        }
-    };
-    const addReservation = async () => {
-        const today = new Date();
-        const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-        const formattedDate = new Intl.DateTimeFormat('pl-PL', options).format(today)
-        try {
-            const dataToAdd = {
-                nazwa: route.params.nazwa,
-                data: formattedDate,
-                obraz: route.params.obraz,
-            };
-            await addDoc(collection(db, "users", userId, "rezerwacje"), dataToAdd);
-        } catch (err) {
-            console.error(err);
-        }
-    };
-        /*const removeReservation = async () => {
-            const qRef = query(collection(db, "users", userId, "rezerwacje"), where("nazwa", "==", route.params.nazwa));
-            const qSnap = await getDocs(qRef);
-            qSnap.forEach((doc) => {
-                console.log(doc.id);
-                const zmienna=doc.id;
-                console.log(zmienna);
-                //const docRef = doc(db, "users", userId, "rezerwacje", "ypch7REQN4kzDk1oSptH");
-                //await deleteDoc(docRef).then(() => { console.log("Entire Document has been deleted successfully.") }) .catch(error => { console.log(error); });
-                //console.log(zmienna);
-                //const docRef2 = doc(db, "users", userId, "rezerwacje", "ypch7REQN4kzDk1oSptH");
-                //deleteDoc(docRef2).then(() => { console.log("Entire Document has been deleted successfully.") }) .catch(error => { console.log(error); });
-                const docRef = doc(db, "users", userId, "rezerwacje", "ypch7REQN4kzDk1oSptH");
-                deleteDoc(docRef) .then(() => { console.log("Entire Document has been deleted successfully.") }) .catch(error => { console.log(error); });
-            });
-            //const docRef2 = doc(db, "users", userId, "rezerwacje", doc.id);
-            //deleteDoc(docRef) .then(() => { console.log("Entire Document has been deleted successfully.") }) .catch(error => { console.log(error); });
-            //deleteDoc(docRef2) .then(() => { console.log("Entire Document has been deleted successfully.") }) .catch(error => { console.log(error); })
-        };*/
-        const removeReservation = async () => {
-            const qRef = query(collection(db, "users", userId, "rezerwacje"), where("nazwa", "==", route.params.nazwa));
-            const qSnap = await getDocs(qRef);
-            qSnap.forEach((doc) => {
-                //console.log(doc.id);
-                removeReservation2(doc.id);
-            });
-        };
-        const removeReservation2 = async (zmienna) => {
-                    console.log(zmienna);
-                    const docRef = doc(db, "users", userId, "rezerwacje", zmienna);
-                    //const docRef2 = doc(db, "users", userId, "ulubione", "6TmLZFAXnykIyW8YD6aI");
-                    deleteDoc(docRef) .then(() => { console.log("Entire Document has been deleted successfully.") }) .catch(error => { console.log(error); });
-                    //deleteDoc(docRef2) .then(() => { console.log("Entire Document has been deleted successfully.") }) .catch(error => { console.log(error); })
-         };
-         const removeReservation3 = async () => {
-                     const qRef = query(collection(db, "users", userId, "ulubione"), where("nazwa", "==", route.params.nazwa));
-                     const qSnap = await getDocs(qRef);
-                     qSnap.forEach((doc) => {
-                         //console.log(doc.id);
-                         removeReservation4(doc.id);
-                     });
-         };
-         const removeReservation4 = async (zmienna2) => {
-                             console.log(zmienna2);
-                             const docRef2 = doc(db, "users", userId, "ulubione", zmienna2);
-                             //const docRef2 = doc(db, "users", userId, "ulubione", "6TmLZFAXnykIyW8YD6aI");
-                             deleteDoc(docRef2) .then(() => { console.log("Entire Document has been deleted successfully.") }) .catch(error => { console.log(error); });
-                             //deleteDoc(docRef2) .then(() => { console.log("Entire Document has been deleted successfully.") }) .catch(error => { console.log(error); })
-         };
+      await addDoc(collection(db, "users", userId, "ulubione"), dataToAdd);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  const addReservation = async () => {
+    const today = new Date();
+    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+    const formattedDate = new Intl.DateTimeFormat('pl-PL', options).format(today)
+    try {
+      const dataToAdd = {
+        nazwa: route.params.nazwa,
+        data: formattedDate,
+        obraz: route.params.obraz,
+      };
+      await addDoc(collection(db, "users", userId, "rezerwacje"), dataToAdd);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  const removeReservation = async () => {
+    const qRef = query(collection(db, "users", userId, "rezerwacje"), where("nazwa", "==", route.params.nazwa));
+    const qSnap = await getDocs(qRef);
+    qSnap.forEach((doc) => {
+      removeReservation2(doc.id);
+    });
+  };
+  const removeReservation2 = async (zmienna) => {
+    console.log(zmienna);
+    const docRef = doc(db, "users", userId, "rezerwacje", zmienna);
+    deleteDoc(docRef)
+      .then(() => { console.log("Entire Document has been deleted successfully.") })
+      .catch(error => { console.log(error); });
+
+  };
+  const removeReservation3 = async () => {
+    const qRef = query(collection(db, "users", userId, "ulubione"), where("nazwa", "==", route.params.nazwa));
+    const qSnap = await getDocs(qRef);
+    qSnap.forEach((doc) => {
+      removeReservation4(doc.id);
+    });
+  };
+  const removeReservation4 = async (zmienna2) => {
+    console.log(zmienna2);
+    const docRef2 = doc(db, "users", userId, "ulubione", zmienna2);
+    //const docRef2 = doc(db, "users", userId, "ulubione", "6TmLZFAXnykIyW8YD6aI");
+    deleteDoc(docRef2)
+      .then(() => { console.log("Entire Document has been deleted successfully.") })
+      .catch(error => { console.log(error); });
+  };
   return (
     <SafeAreaView style={styles.container}>
-        <Image style={styles.image} source={require("../assets/log2.png")} />
-        { accelerometerData.x > 0.53 ? (
-                navigation.navigate("Rejestr", {language: "english"})
-         ) : null }
-        <Text style={styles.mytext}>Opis</Text>
-        <TouchableOpacity style={styles.loginBtnd} onPress={()=>navigation.navigate("Rejestr", {language: "english"})}>
-                <Text style={styles.buttonText}>&lt;-</Text>
-        </TouchableOpacity>
+      <Image style={styles.image} source={require("../assets/log2.png")} />
+      <Text style={styles.mytext}>Opis</Text>
+      <TouchableOpacity style={styles.loginBtnd} onPress={() => navigation.navigate("Rejestr", { language: "english" })}>
+        <Text style={styles.buttonText}>&lt;-</Text>
+      </TouchableOpacity>
 
-        {data.length > 0 ? <Image style={styles.imagek} source={{ uri: route.params.obraz }} /> : null}
-              {data.length > 0 ? <Text style={styles.mytexta}>{route.params.nazwa}</Text> : null}
-              {data.length > 0 ? <Text style={styles.mytextb}>{route.params.opis}</Text> : null}
-        <View style={styles.sdview}>
-            <TouchableOpacity style={styles.loginBtn} onPress={addReservation}>
-                <Text style={styles.buttonText}>Rezerwuj</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.loginBtn} onPress={addToFavorites}>
-              <Text style={styles.buttonText}>Ulubione</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.loginBtn} onPress={data.length !== 0 ? () => removeReservation(data[0].nazwa)&&removeReservation3(data[0].nazwa) : null}>
-              <Text style={styles.buttonText}>Usuń</Text>
-            </TouchableOpacity>
-        </View>
+      {data.length > 0 ? <Image style={styles.imagek} source={{ uri: route.params.obraz }} /> : null}
+      {data.length > 0 ? <Text style={styles.mytexta}>{route.params.nazwa}</Text> : null}
+      {data.length > 0 ? <Text style={styles.mytextb}>{route.params.opis}</Text> : null}
+      <View style={styles.sdview}>
+        <TouchableOpacity style={styles.loginBtn} onPress={addReservation}>
+          <Text style={styles.buttonText}>Rezerwuj</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.loginBtn} onPress={addToFavorites}>
+          <Text style={styles.buttonText}>Ulubione</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.loginBtn} onPress={data.length !== 0 ? () => removeReservation(data[0].nazwa) && removeReservation3(data[0].nazwa) : null}>
+          <Text style={styles.buttonText}>Usuń</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 }
@@ -181,62 +163,62 @@ const styles = StyleSheet.create({
   },
 
   scrollView: {
-      backgroundColor: 'white',
-      marginHorizontal: 20,
-    },
+    backgroundColor: 'white',
+    marginHorizontal: 20,
+  },
   sdview: {
-             flexDirection: 'row',
-             marginTop: 0,
-    },
+    flexDirection: 'row',
+    marginTop: 0,
+  },
 
   image: {
     marginBottom: 5,
   },
 
-   imagek: {
-      marginBottom: 5,
-      height: 350,
-      width: 300,
-      marginRight: 0,
-      marginTop: 0,
-    },
-    imagek2: {
-          marginBottom: 5,
-          height: 400,
-          width: 200,
-          marginRight: 260,
-          marginTop: 1,
-    },
-    buttonText:{
-        placeholderTextColor: "#FFFFFF",
-        color: "white",
-    },
+  imagek: {
+    marginBottom: 5,
+    height: 350,
+    width: 300,
+    marginRight: 0,
+    marginTop: 0,
+  },
+  imagek2: {
+    marginBottom: 5,
+    height: 400,
+    width: 200,
+    marginRight: 260,
+    marginTop: 1,
+  },
+  buttonText: {
+    placeholderTextColor: "#FFFFFF",
+    color: "white",
+  },
 
-  mytext:{
+  mytext: {
     height: 30,
     marginBottom: 0,
   },
 
-  mytexta:{
-      height: 30,
-      marginTop: 0,
-      marginBottom: 0,
-      marginRight: 230,
-    },
- mytextb:{
-        height: 30,
-        marginTop: 0,
-        marginBottom: 0,
-        textAlign: 'justify',
-        flex: 1,
-        flexWrap: 'wrap',
-        width: '100%',
-        overflow: 'hidden',
-      },
+  mytexta: {
+    height: 30,
+    marginTop: 0,
+    marginBottom: 0,
+    marginRight: 230,
+  },
+  mytextb: {
+    height: 30,
+    marginTop: 0,
+    marginBottom: 0,
+    textAlign: 'justify',
+    flex: 1,
+    flexWrap: 'wrap',
+    width: '100%',
+    overflow: 'hidden',
+  },
 
-  newtext:{
+  newtext: {
     marginRight: 220,
-    marginBottom:10,
+    marginBottom: 10,
   },
 
   inputView: {
@@ -275,12 +257,12 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   loginBtnd: {
-      width: "10%",
-      borderRadius: 10,
-      height: 40,
-      alignItems: "center",
-      justifyContent: "center",
-      marginRight: 280,
-      backgroundColor: "#808080",
-    },
+    width: "10%",
+    borderRadius: 10,
+    height: 40,
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 280,
+    backgroundColor: "#808080",
+  },
 });
