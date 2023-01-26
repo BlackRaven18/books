@@ -36,7 +36,7 @@ function MyStack() {
 function BottomTabs() {
   return (
     <Tab.Navigator
-    initialRouteName='Popularne'
+    initialRouteName='Profil'
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;

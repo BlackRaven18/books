@@ -50,7 +50,9 @@ export default function LoginScreen({navigation}) {
       // Signed in 
       const user = userCredential.user;
       console.log("Signed in: ", user.email);
-      navigation.navigate("Books");
+      navigation.navigate("Books", {
+        screen: "Popularne"
+      });
     })
     .catch((error) => {
       const errorCode = error.code;
